@@ -37,9 +37,11 @@ server.on("request", (req, res) => {
 
   if (req.method === "POST" && items[1] === "friends") {
     req.on("data", (data) => {
-      const friends = data.toString();
-      console.log("Post Data", friends);
+      const friend = data.toString();
+      console.log("Post Data", friend);
+      friends.push(JSON.parse(friend));
     });
+    req.pipe(res);
   } else if (req.method === "GET" && items.length > 2 && items[2] != "") {
     console.log(`Friend: ${friends[items[2]]}`);
     res.end(JSON.stringify(friends[items[2]]));
