@@ -35,7 +35,14 @@ server.on("request", (req, res) => {
   const items = req.url.split("/");
   console.log(items);
 
-  if (items.length > 2 && items[2] != "") {
+  if (req.method === "POST" && items[1] === "friends") {
+    req.on("data", (data) => {
+      const friend = data.toString();
+      console.log("Post Data", friend);
+      friends.push(JSON.parse(friend));
+    });
+    req.pipe(res);
+  } else if (req.method === "GET" && items.length > 2 && items[2] != "") {
     console.log(`Friend: ${friends[items[2]]}`);
     res.end(JSON.stringify(friends[items[2]]));
   } else if (items[1] === "friends") {
